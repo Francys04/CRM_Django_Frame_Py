@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 import datetime
 # context
@@ -7,6 +7,16 @@ from .models import Lead, Agent, Category
 from .forms import LeadForm, LeadModelForm
 from django.views import generic
 from agents.mixins import OrganisorAndLoginRequiredMixin
+from django.views.generic import TemplateView, ListView
+
+# CRUD + L - create, retrive, update, delete, List
+class SignupView(generic.CreateView):
+    template_name="registration/signup.html"
+    form_class = LeadModelForm
+    
+    def get_success_url(self) -> str:
+        return reverse('login')
+
 
 # for dashboard
 class DashboardView(OrganisorAndLoginRequiredMixin, generic.TemplateView):

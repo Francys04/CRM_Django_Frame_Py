@@ -29,6 +29,7 @@ urlpatterns = [
     path('', landing_page, name='landing-page'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     path('leads/', include('leads.urls', namespace="leads")),
-     path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]
+
