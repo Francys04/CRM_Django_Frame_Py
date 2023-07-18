@@ -8,11 +8,12 @@ from .forms import LeadForm, LeadModelForm
 from django.views import generic
 from agents.mixins import OrganisorAndLoginRequiredMixin
 from django.views.generic import TemplateView, ListView
+from django.contrib.auth.forms import UserCreationForm
 
 # CRUD + L - create, retrive, update, delete, List
 class SignupView(generic.CreateView):
     template_name="registration/signup.html"
-    form_class = LeadModelForm
+    form_class = UserCreationForm
     
     def get_success_url(self) -> str:
         return reverse('login')
