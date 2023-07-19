@@ -15,13 +15,19 @@ class LandingPageTest(TestCase):
         self.assertTemplateUsed(response, "landing.html")
         
            
-"""for lead list view"""
+"""for signup view"""
 class LeadListTest(TestCase):
     def test_status_code(self):
-        response = self.client.get(reverse('leads'))
+        response = self.client.get(reverse('signup'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "leads/lead_list.html")
+        self.assertTemplateUsed(response, "registration/signup.html")
+    
         
-
+"""Lead detail view"""
+class LeadDetailTest(TestCase):
+    def test_status_code(self):
+        response = self.client.get(reverse(''))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "leads/lead_detail.html")
  
         

@@ -23,6 +23,7 @@ class LeadForm(forms.Form):
     age = forms.IntegerField(min_value=0)
 
 
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
