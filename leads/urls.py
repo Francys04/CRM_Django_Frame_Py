@@ -5,13 +5,13 @@ from .views import (home_page, lead_detail, lead_create, lead_update, lead_delet
                     LeadListView, LeadDetailView, LeadCreateView, LeadUpdateView, LeadDeleteView
 )
 app_name = "leads"
-# pk -> primary key from id user from sql
+""" pk -> primary key from id user from sql
+as_view() is a method provided by class-based views that converts a class-based view into a function-based view.
+"""
 urlpatterns = [
     path('', LeadListView.as_view(), name='lead-list'),
     path('<int:pk>/', LeadDetailView.as_view(), name='lead-detail'),
     path('<int:pk>/update/', LeadUpdateView.as_view(), name='lead-update'),
     path('<int:pk>/delete/', LeadDeleteView.as_view(), name='lead-delete'),
-    path('create/', LeadCreateView.as_view(), name='lead-create'),
-   
-    
+    path('create/', LeadCreateView.as_view(), name='lead-create'),  
 ]

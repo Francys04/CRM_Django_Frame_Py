@@ -61,7 +61,8 @@ class Agent(models.Model):# user auth, create many agents for one user
     def __str__(self):# from python shell
         return self.user.email
     
-
+"""user profile associated with the built-in User model through a one-to-one relationship
+allows you to extend the default user model with additional fields and information specific to each user"""
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -71,15 +72,19 @@ class UserProfile(models.Model):
 """Category"""
 class Category(models.Model):
     name = models.CharField(max_length=30)  # New, Contacted, Converted, Unconverted
-    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
-
+""" Python function post_user_created_signal appears to be a signal handler for a user creation event. 
+It is designed to respond to a signal (e.g., a post_save signal) that is sent whenever a new user object is created. """
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
-
+"""post_save.connect(post_user_created_signal, sender=User) is the code that connects the post_user_created_signal 
+function to the post_save signal of the User model in Django. 
+This connection ensures that the post_user_created_signal function will be called automatically 
+every time a new User instance is saved (i.e., created or updated)."""
 post_save.connect(post_user_created_signal, sender=User)

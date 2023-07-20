@@ -10,7 +10,7 @@ import datetime
 from .models import Lead, Agent, Category
 # forms
 from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
-"""Django’s generic views were developed to ease that pain."""
+"""Django generic views were developed to ease that pain."""
 from django.views import generic
 """A mixin is a special kind of multiple inheritance."""
 from agents.mixins import OrganisorAndLoginRequiredMixin
@@ -26,41 +26,6 @@ class SignupView(generic.CreateView):
     def get_success_url(self) -> str:
         return reverse('login')
 
-
-# for dashboard
-class DashboardView(OrganisorAndLoginRequiredMixin, generic.TemplateView):
-    template_name = "dashboard.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
-
-        user = self.request.user
-
-        # How many leads we have in total
-        total_lead_count = Lead.objects.filter(organisation=user.userprofile).count()
-
-        # How many new leads in the last 30 days
-        thirty_days_ago = datetime.date.today() - datetime.timedelta(days=30)
-
-        total_in_past30 = Lead.objects.filter(
-            organisation=user.userprofile,
-            date_added__gte=thirty_days_ago
-        ).count()
-
-        # How many converted leads in the last 30 days
-        converted_category = Category.objects.get(name="Converted")
-        converted_in_past30 = Lead.objects.filter(
-            organisation=user.userprofile,
-            category=converted_category,
-            converted_date__gte=thirty_days_ago
-        ).count()
-
-        context.update({
-            "total_lead_count": total_lead_count,
-            "total_in_past30": total_in_past30,
-            "converted_in_past30": converted_in_past30
-        })
-        return context
 
 # CRUD + L - create, retrive, update, delete, List
 # for leading view
@@ -170,15 +135,16 @@ def lead_create(request):
             # print("Lead has been craeted")
 
 
-"""for leadupdate view"""
+"""for leadupdate view, class-based view LeadUpdateView and a function-based view lead_update, 
+both of which handle the update functionality for a Lead object in a Django web application"""
 class LeadUpdateView(generic.UpdateView):
     template_name = "leads/lead_update.html"
     queryset = Lead.objects.all()
     form_class = LeadModelForm
-
+    """The get_success_url method defines the URL to which the user will be redirected after successfully updating the Lead object. 
+    In this case, it redirects to the URL named "leads:lead-list" using the reverse function."""
     def get_success_url(self):
         return reverse("leads:lead-list")
-
 
 def lead_update(request, pk):
     lead = Lead.objects.get(id=pk)
@@ -194,6 +160,8 @@ def lead_update(request, pk):
     }
     return render(request, "leads/lead_update.html", context)
 
+"""view for deleting a Lead object in a Django web application. 
+It uses Django's built-in DeleteView class to handle the deletion process."""
 class LeadDeleteView(generic.DeleteView):
     template_name = "leads/lead_delete.html"
     queryset = Lead.objects.all()
@@ -206,6 +174,42 @@ def lead_delete(request, pk):
     lead = Lead.objects.get(id=pk)
     lead.delete()
     return redirect("/leads")
+
+
+"""for dashboard ->next step for this project"""
+class DashboardView(OrganisorAndLoginRequiredMixin, generic.TemplateView):
+    template_name = "dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+
+        user = self.request.user
+
+        # How many leads we have in total
+        total_lead_count = Lead.objects.filter(organisation=user.userprofile).count()
+
+        # How many new leads in the last 30 days
+        thirty_days_ago = datetime.date.today() - datetime.timedelta(days=30)
+
+        total_in_past30 = Lead.objects.filter(
+            organisation=user.userprofile,
+            date_added__gte=thirty_days_ago
+        ).count()
+
+        # How many converted leads in the last 30 days
+        converted_category = Category.objects.get(name="Converted")
+        converted_in_past30 = Lead.objects.filter(
+            organisation=user.userprofile,
+            category=converted_category,
+            converted_date__gte=thirty_days_ago
+        ).count()
+
+        context.update({
+            "total_lead_count": total_lead_count,
+            "total_in_past30": total_in_past30,
+            "converted_in_past30": converted_in_past30
+        })
+        return context
 
 
 
