@@ -84,3 +84,13 @@ This test method tests the behavior of the landing page view when a GET request 
 ## Docker_file
 Dockerization is the process of packaging an application and its dependencies into a container, using Docker, a popular containerization platform. The main goal of Dockerization is to create a portable and reproducible environment that allows the application to run consistently across different systems, such as development, testing, staging, and production environments.
 Run in terminal the following command to start the project: docker compose up --build, and open Docker Desktop for acces the link of server (8000:8000)
+
+
+#### Fig.1 Lead list
+<img src="img/leads.JPG">
+
+#### Fig.2 Create Lead
+<img src="img/create lead.JPG">
+
+#### Fig.3 Add Lead to the Agent group
+<img src="img/admin_agents.JPG">
