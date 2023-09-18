@@ -94,3 +94,6 @@ Run in terminal the following command to start the project: docker compose up --
 
 #### Fig.3 Add Lead to the Agent group
 <img src="img/admin_agents.JPG">
+
+#### Fig.4 Deploy with Docker Desktop
+<img src="img/12.JPG">
